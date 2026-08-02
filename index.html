@@ -7,14 +7,14 @@
   <meta name="theme-color" content="#143d73">
   <link rel="canonical" href="https://tvet-english.vercel.app/">
   <meta property="og:title" content="統測英文歷屆試題庫">
-  <meta property="og:description" content="90–115 學年度官方題本、答案卡與 115 年逐題練習。">
+  <meta property="og:description" content="90–115 學年度 1,196 題官方考古題，皆可直接作答並查看解析。">
   <meta property="og:url" content="https://tvet-english.vercel.app/">
   <title>統測英文歷屆試題庫｜90–115 官方考古題</title>
   <link rel="icon" href="favicon.svg?v=20260802-v1" type="image/svg+xml">
   <link rel="stylesheet" href="styles.css?v=20260802-v1">
   <script defer src="data/exams.js?v=20260802-v1"></script>
-  <script defer src="data/questions-115.js?v=20260802-v1"></script>
-  <script type="module" src="app.js?v=20260802-v1"></script>
+  <script defer src="data/questions.js?v=20260802-v2"></script>
+  <script type="module" src="app.js?v=20260802-v2"></script>
   <style id="paperPageStyle"></style>
 </head>
 <body>
@@ -92,7 +92,7 @@
           <div id="categoryOptions"></div>
         </fieldset>
         <p id="categoryUnavailable" class="unavailable-note" hidden>這個年度尚未完成逐題分類，因此只提供年度、題數與官方統計篩選。</p>
-        <p class="annotation-note">115 年已完成大標／小標；舊年度尚未逐題結構化，因此不套用分類篩選。</p>
+        <p class="annotation-note">90–115 年皆已完成題文、選項、解析與大標／小標，可直接跨年度篩選練習。</p>
       </div>
       <p id="yearMeta" class="match-count"></p>
       <a id="metricSourceLink" class="metric-source" target="_blank" rel="noopener" hidden>查看本年度官方試題研討會資料</a>
@@ -120,7 +120,7 @@
 
     <section id="teacherPanel" class="panel teacher-panel" hidden>
       <div class="panel-head"><div><p class="section-label">出卷模式（老師）</p><h2 id="teacherTitle" tabindex="-1">勾選題目，建立線上測驗或可編輯考卷</h2></div><button id="closeTeacher" class="quiet" type="button">關閉</button></div>
-      <p class="muted">依上方篩選條件列出題目；115 年可列印題文、教師答案與解析，舊年度仍提供官方原卷答案卡。</p>
+      <p class="muted">依上方篩選條件列出題目；90–115 年皆可列印題文、教師答案與解析。</p>
       <div class="control-row">
         <label>紙張<select id="paperSize"><option value="A4">A4</option><option value="B4">B4（雙欄推薦）</option></select></label>
         <button id="applyTeacherButton" class="quiet" type="button">套用目前條件</button>
@@ -151,7 +151,7 @@
         <p id="formatNotice" class="notice"></p>
         <div class="source-card">
           <span aria-hidden="true">EN</span>
-          <div><strong>115 年 42 題已結構化</strong><p>兩張必要圖表已取自官方 PDF；舊年度仍請開啟官方題本核對題文。</p></div>
+          <div><strong>90–115 年 1,196 題皆已結構化</strong><p>題幹、選項與必要圖表取自官方原卷；原卷連結保留供逐題核對。</p></div>
         </div>
         <div id="sourceLinks" class="source-links"></div>
       </div>
@@ -186,9 +186,9 @@
     <section id="about" class="panel prose">
       <p class="section-label">資料說明</p>
       <h2>我們寧可誠實留白，也不替官方答案腦補。</h2>
-      <p>本版已完成 90–115 年官方原卷、線上答案卡與自動計分；115 年另完成 42 題題文、選項、6 大標／32 個真題小標與逐題解析，並收錄完整難度、鑑別度分組。</p>
+      <p>本版已完成 90–115 年官方原卷、1,196 題題文與選項、線上答案卡、自動計分、6 大標分類與逐題解析；115 年另收錄官方難度、鑑別度分組與已公開的選項分布。</p>
       <p>115 年另有填充、句子重組與中譯英共 3 題非選擇題；目前保留在官方原卷，未硬塞進單選題自動計分。試題著作權與使用規範依技專校院入學測驗中心公告。</p>
-      <p class="muted">90–114 年尚未完成逐題題文與分類，僅提供官方原卷、官方答案卡及題號練習；查不到的精確統計不以比例或答案反推。</p>
+      <p class="muted">舊年度掃描頁與圖像題保留官方原卷圖供核對；查不到的精確統計不以比例或答案反推。</p>
     </section>
   </main>
 

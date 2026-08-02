@@ -40,8 +40,8 @@ test("快速十題使用安全亂數且避免沿用上一組", () => {
   assert.match(app, /const replacement = directCandidates/);
 });
 
-test("115 年逐題資料會在主程式前載入", () => {
-  const dataPosition = html.indexOf('src="data/questions-115.js?');
+test("90–115 年逐題資料總表會在主程式前載入", () => {
+  const dataPosition = html.indexOf('src="data/questions.js?');
   const appPosition = html.indexOf('src="app.js?');
   assert.ok(dataPosition > 0 && appPosition > dataPosition);
 });
@@ -74,9 +74,10 @@ test("首頁具有大分類、小分類與完整老師出卷入口", () => {
   assert.match(app, /function teacherPaperHtml\(items\)/);
 });
 
-test("沒有逐題證據的舊年度分類維持停用，115 年官方統計已開放", () => {
+test("全年度分類已開放，115 年官方統計仍獨立呈現", () => {
   assert.doesNotMatch(html, /id="classicalToggle"|id="modernToggle"/);
-  assert.match(html, /舊年度尚未逐題結構化，因此不套用分類篩選/);
+  assert.match(html, /90–115 年皆已完成題文、選項、解析與大標／小標/);
+  assert.match(html, /90–115 年 1,196 題皆已結構化/);
   assert.doesNotMatch(html, /id="difficultySelect"[^>]*disabled/);
   assert.doesNotMatch(html, /id="discriminationSelect"[^>]*disabled/);
   assert.match(html, /<strong>42<\/strong><span>題難度分組<\/span>/);

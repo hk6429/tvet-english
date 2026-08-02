@@ -18,7 +18,7 @@ const CATEGORIES = {
 const SUBCATEGORIES = {
   C1: ["語境選字", "同義字辨識", "搭配詞運用"],
   C2: ["介系詞運用", "連接詞運用", "分詞結構"],
-  C3: ["日常購物", "休閒娛樂", "節慶文化", "終身學習", "健康安全", "家庭協作", "技職競賽", "求職表達", "公民生活", "人物與環境"],
+  C3: ["情境對話", "日常購物", "休閒娛樂", "節慶文化", "終身學習", "健康安全", "家庭協作", "技職競賽", "求職表達", "公民生活", "人物與環境"],
   C4: ["段落語意", "結尾統整"],
   C5: ["明示訊息", "後續推測", "趨勢判讀", "資訊整合", "圖表判讀", "反向細節", "時序重組"],
   C6: ["結論判斷", "資訊整合", "因果推論", "主旨判斷", "反向細節", "語意推論", "事實判斷"],
@@ -68,10 +68,11 @@ function restoreMoreActionFocus(id) {
   }
   $(id).focus();
 }
-function requiresOfficialFigure(question) {
+function requiresOfficialFigure(question, year) {
   if (!question) return false;
-  const group = question.group ? findQuestionBank(115)?.groups[question.group] : null;
-  return Object.values(question.options).some((option) => option.includes("圖像選項"))
+  const group = question.group ? findQuestionBank(year)?.groups[question.group] : null;
+  return Boolean(question.sourcePageImage)
+    || Object.values(question.options).some((option) => option.includes("圖像選項"))
     || String(question.passage ?? "").includes("官方圖表")
     || String(group?.passage ?? "").includes("source-image-note");
 }
@@ -235,13 +236,14 @@ function renderAnswerGrid() {
     const bank = findQuestionBank(item.year);
     const group = question.group ? bank?.groups[question.group] : null;
     let groupMaterial = "";
-    if ((group?.passage || group?.image) && !renderedGroups.has(question.group)) {
-      renderedGroups.add(question.group);
-      groupMaterial = `<details class="source-passage" id="passage-${question.group}" open><summary>${escapeHtml(group.title)}</summary>${group.passage ?? ""}${group.image ? `<img class="source-figure" src="${escapeHtml(group.image)}" alt="第 ${question.group.slice(1).replace("_", "–")} 題官方圖表">` : ""}</details>`;
+    const groupKey = `${item.year}-${question.group}`;
+    if ((group?.passage || group?.image) && !renderedGroups.has(groupKey)) {
+      renderedGroups.add(groupKey);
+      groupMaterial = `<details class="source-passage" id="passage-${groupKey}" open><summary>${escapeHtml(group.title)}</summary>${group.passage ?? ""}${group.image ? `<img class="source-figure" src="${escapeHtml(group.image)}" alt="${item.year} 年第 ${question.group.slice(1).replace("_", "–")} 題官方圖表">` : ""}</details>`;
     } else if (group?.passage || group?.image) {
-      groupMaterial = `<a class="passage-jump" href="#passage-${question.group}">↑ 回看本題組材料</a>`;
+      groupMaterial = `<a class="passage-jump" href="#passage-${groupKey}">↑ 回看本題組材料</a>`;
     }
-    const sourceMaterial = `${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}`;
+    const sourceMaterial = `${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}${question.sourcePageImage ? `<details class="source-passage source-page" open><summary>本題官方原卷圖</summary><img class="source-figure" src="${escapeHtml(question.sourcePageImage)}" alt="${item.year} 年第 ${item.no} 題官方原卷頁面"></details>` : ""}`;
     const meta = `<div class="question-meta"><span>統測 ${item.year} 年第 ${item.no} 題</span><span class="question-tag cat-${question.cat}">${CATEGORIES[question.cat] ?? question.cat}</span>${(question.tags ?? []).map((tag) => `<span class="question-tag">${escapeHtml(tag)}</span>`).join("")}${READ_PROCESS[question.cat] ? `<span class="question-tag process-tag">${READ_PROCESS[question.cat]}</span>` : ""}<span class="question-state" id="state-${key}">尚未作答</span></div>`;
     return `<article class="question-card" data-key="${key}">${meta}${sourceMaterial}<fieldset><legend><span>${item.no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${choices}</div></fieldset><div class="question-feedback" id="feedback-${key}" hidden aria-live="polite"></div></article>`;
   }).join("");
@@ -335,7 +337,7 @@ function startQuickPractice() {
   updateYearMeta();
   const directCandidates = filteredCandidates().filter(({ exam, no }) => {
     const question = findQuestion(exam.year, no);
-    return question && !requiresOfficialFigure(question);
+    return question && !requiresOfficialFigure(question, exam.year);
   });
   if (!directCandidates.length) {
     showInfo("所選年度尚無可直接作答的題目", "請加入已完成題幹與選項結構化的年度；本站不會用推測內容代替官方原題。");
@@ -445,7 +447,7 @@ function renderQuestionFeedback(responses, revealUnanswered = false) {
       label.classList.toggle("is-locked", Boolean(selected));
       input.disabled = Boolean(selected);
     });
-    const insight = item.year === 115 ? QUESTION_INSIGHTS_115[item.no] : null;
+    const insight = item.question.explain ? { explain: item.question.explain } : (item.year === 115 ? QUESTION_INSIGHTS_115[item.no] : null);
     const metric = OFFICIAL_METRICS[item.year]?.items[item.no];
     const stats = item.year === 115 ? OFFICIAL_OPTION_STATS_115[item.no] : null;
     const savedReason = safeRead(WRONG_REASON_KEY, {})[key];
@@ -456,7 +458,7 @@ function renderQuestionFeedback(responses, revealUnanswered = false) {
     feedback.innerHTML = `
       ${selected ? liveStatusHtml(item, selected) : `<p class="feedback-status pending">尚未作答</p>`}
       <p><strong>你的答案：${selected ? escapeHtml(selected) : "—"}</strong>・正解：${escapeHtml(item.answer)}</p>
-      <div class="explanation"><span class="explain-label">本站自編解析（非官方）</span><b>解題關鍵</b><p>${insight?.explain ?? "本題解析已依題組材料與官方答案整理；遇到圖表選項時，請同步開啟官方題本核對圖像細節。"}</p></div>
+      <div class="explanation"><span class="explain-label">本站自編解析（非官方）</span><b>解題關鍵</b><p>${escapeHtml(insight?.explain ?? "本題解析已依題組材料與官方答案整理；遇到圖表選項時，請同步開啟官方題本核對圖像細節。")}</p></div>
       ${metric ? `<p class="metric-badges"><span>難度：${metric.difficulty}</span><span>鑑別度：${metric.discrimination}</span>${stats ? `<span>官方答對率 ${(stats.pass * 100).toFixed(0)}%</span><span>鑑別度 ${stats.discrimination.toFixed(2)}</span>` : ""}</p>` : ""}
       ${stats ? `<div class="official-stats"><div class="official-source-label">官方公布資料</div><div class="stats-head"><b class="stats-title">全體考生作答分布（統測中心試題研討會）</b><span><button type="button" data-stats-key="${key}" data-stats-group="all" class="active" aria-pressed="true">全體</button><button type="button" data-stats-key="${key}" data-stats-group="low" aria-pressed="false">待加強組</button></span></div><div class="stats-chart" data-chart-key="${key}">${statsChartHtml(item, "all")}</div><small>未作答與複選未列入，四項合計可能略低於 100%。</small>${lureTeachingHtml(item)}</div>` : `<p class="stats-unavailable">本題官方未公開選項百分比分布；本站不以答對率反推。</p>`}
       ${selected && !accepted.includes(selected) ? `<div class="wrong-reason"><span>這題錯在：</span>${["看錯題意", "詞義不熟", "證據抓錯", "概念不熟", "用猜的"].map((reason) => `<button type="button" data-reason="${reason}" aria-pressed="${savedReason === reason}" class="${savedReason === reason ? "active" : ""}">${reason}</button>`).join("")}<small class="wrong-reason-tip">選一個最接近的原因，之後重練會更有方向。</small></div><button type="button" class="retry-question" data-retry-key="${key}">再練一次這題</button>` : ""}
@@ -594,11 +596,12 @@ function teacherPaperHtml(items) {
     const q = item.question;
     const bank = findQuestionBank(item.year);
     const group = q.group ? bank?.groups[q.group] : null;
-    const groupPassage = (group?.passage || group?.image) && !renderedGroups.has(q.group) ? (renderedGroups.add(q.group), `<div class="print-passage"><b>${escapeHtml(group.title)}</b>${group.passage ?? ""}${group.image ? `<img class="source-figure" src="${escapeHtml(group.image)}" alt="官方圖表">` : ""}</div>`) : "";
-    const figureNote = requiresOfficialFigure(q) ? `<p class="print-figure-note">※ 本題含圖，列印後請搭配官方原卷。</p>` : "";
+    const groupKey = `${item.year}-${q.group}`;
+    const groupPassage = (group?.passage || group?.image) && !renderedGroups.has(groupKey) ? (renderedGroups.add(groupKey), `<div class="print-passage"><b>${escapeHtml(group.title)}</b>${group.passage ?? ""}${group.image ? `<img class="source-figure" src="${escapeHtml(group.image)}" alt="官方圖表">` : ""}</div>`) : "";
+    const figureNote = requiresOfficialFigure(q, item.year) ? `<p class="print-figure-note">※ 本題含圖，列印後請搭配官方原卷。</p>` : "";
     return `<article class="print-question">${groupPassage}${q.passage ? `<div class="print-passage">${q.passage}</div>` : ""}<h3>${index + 1}. ${escapeHtml(q.stem)}</h3>${figureNote}<ol type="A">${["A", "B", "C", "D"].map((choice) => `<li>${escapeHtml(q.options[choice])}</li>`).join("")}</ol></article>`;
   }).join("");
-  const answers = items.map((item, index) => `<li><b>第 ${index + 1} 題：${escapeHtml(item.answer)}</b>${item.question ? `<p>${QUESTION_INSIGHTS_115[item.no]?.explain ?? "請參照官方答案。"}</p>` : ""}</li>`).join("");
+  const answers = items.map((item, index) => `<li><b>第 ${index + 1} 題：${escapeHtml(item.answer)}</b>${item.question ? `<p>${escapeHtml(item.question.explain ?? QUESTION_INSIGHTS_115[item.no]?.explain ?? "請參照官方答案。")}</p>` : ""}</li>`).join("");
   return `<header><h1>${title}</h1><p>共 ${items.length} 題・題目來源：技專校院入學測驗中心</p></header><section class="print-questions">${questions}</section><section class="teacher-answer-section"><h2>教師答案與解析</h2><ol>${answers}</ol></section>`;
 }
 

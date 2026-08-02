@@ -1,0 +1,56 @@
+// 93 年官方題本是純掃描 PDF。以下內容已逐頁對照官方原卷人工校正，
+// 用來覆蓋 OCR 容易誤判的底線、頁碼、標點與相近字形。
+export const QUESTION_CORRECTIONS_93 = {
+  1: { stem: "For centuries, dogs are believed to be the best company to human beings." },
+  2: { stem: "If you ask students why they are late for class, their excuses will be very different." },
+  3: { stem: "Small vocabulary size usually prevents readers from fully understanding the text they read." },
+  4: { stem: "In a traditional Chinese family, children have to give back to their family in return for the previous support." },
+  5: { stem: "The summer in Taiwan is humid; the large quantity of water in the air makes it feel even hotter and more uncomfortable." },
+  6: { stem: "The benefits of vitamins and minerals are emphasized because they play an important role in maintaining good health." },
+  7: { stem: "I usually have a busy schedule, but once in a while I spend a few days in the mountains." },
+  8: { stem: "Lung cancer, one of the major killers in Taiwan, has long been associated with air pollution and smoking." },
+  9: { stem: "Customers may pay ____________ or use a credit card in major department stores." },
+  10: { stem: "Writing is a very useful ____________ for students. In the future, they can use it at different workplaces." },
+  11: { stem: "The problem was so difficult that most students could not ____________ it.", options: { D: "create" } },
+  12: { stem: "When in danger, most parents will do what they can to ____________ their children from harm." },
+  13: { stem: "The British are the biggest ____________ of chocolate; each person, on average, eats nearly 10 kilograms per year." },
+  14: { stem: "Office workers ____________ from back problems because they tend to sit still for long periods of time." },
+  15: { stem: "The victim of the plane crash stayed ____________ for two weeks, and then died last night.", options: { D: "rough" } },
+  16: { stem: "Waiter: Are you ready to order?\nMr. Li: Not quite yet.\nWaiter: Oh, ____________, sir." },
+  17: { stem: "Jerome: Do you play the guitar?\nAnthony: Of course.\nJerome: ____________\nAnthony: Sure. I’d love to." },
+  18: {
+    stem: "Andy: You don’t look well. What’s the matter?\nMaria: ____________\nAndy: Seems to me you need a good rest.",
+    options: { C: "I’ve got an awful headache." },
+  },
+  19: { stem: "Waitress: Would you like anything else?\nNorman: Chocolate cake, please.\nWaitress: O.K. ____________", options: { D: "I like ice cream." } },
+  20: { stem: "Allen: I’m leaving for Tokyo next Monday.\nEric: Next Monday? How long do you plan to stay there?\nAllen: ____________" },
+  21: {
+    stem: "Bob: Stop! We can’t cross the street here.\nTom: ____________\nBob: We may get hit by a car.\nTom: Well, it doesn’t look dangerous to me at all.",
+    options: { D: "We’ve got to go." },
+  },
+  22: { stem: "Mary: I’ve got great news. ____________\nJudy: Well, what is it?\nMary: I have a week’s vacation next month, and I’m so excited!\nJudy: Do you? That’s wonderful." },
+  23: { stem: "Bill: This weather is really terrible, isn’t it?\nKaren: I’ll say. The bus always seems to come late on rainy mornings.\nBill: ____________ It sure does." },
+  24: { stem: "(On the phone)\nEunice: Hello, my watch isn’t working.\nClerk: What’s wrong with it?\nEunice: It just stopped. Can you fix it?\nClerk: Well, ____________. I’ll have a look at it." },
+  25: { stem: "Jean: Do you often eat out?\nEva: Only when I can get a babysitter.\nJean: I know. ____________\nEva: You can say that again!" },
+  35: { options: { D: "sold out" } },
+  41: { stem: "The passage was written mainly to ask people to ____________." },
+  42: { stem: "Which of the following is NOT recommended in the passage for people to show their support for the 30-Hour Famine?", options: { D: "Develop relief projects." } },
+  43: { stem: "According to the passage, which of the following is true about World Vision Taiwan?" },
+  44: { stem: "In 2002, World Vision Taiwan spent 60% of the raised money on ____________." },
+  45: { stem: "The word victimized in line 1 most likely means “____________.”" },
+  46: { stem: "If a building withstands an earthquake, it is left ____________ by the earthquake.", options: { D: "eaten" } },
+  47: { stem: "The word plant in the first paragraph refers to the ____________." },
+  48: { stem: "Which of the following is true according to the passage?" },
+  49: { stem: "Which of the following is NOT true according to the passage?" },
+  50: {
+    stem: "The second paragraph is mainly about ____________.",
+    options: { D: "a new source of electrical energy" },
+  },
+};
+
+export const GROUP_PASSAGES_93 = {
+  G26_32: `<p>Halloween is a very special holiday. It always falls <b>26</b> the last day of October. Originally it came from a Catholic holiday to honor all saints, <b>27</b> the holiday customs are of non-Catholic origin. Today in the United States, Halloween is a <b>28</b> holiday for children and grown-ups. Children dress up in <b>29</b> and go from door to door “trick-or-treating.” Grown-ups give them a treat of candy, cookies, or money. <b>30</b> the children don’t get a treat, they will sometimes play a trick on you. On this day <b>31</b> is not unusual to see children dressed like witches, black cats, devils, and skeletons. <b>32</b> custom is to hollow out a pumpkin and make a jack-o’-lantern. The jack-o’-lantern is then placed in the window with a candle inside. Children and grown-ups alike go to parties on this holiday.</p>`,
+  G33_40: `<p>New Zealand and Australia are often referred to as the “land down under.” The name grew <b>33</b> the idea that these two countries are opposite or below Europe on the globe. While New Zealand and Australia are often linked, they are individual <b>34</b>. New Zealand has its unique landscape; it is <b>35</b> of two main islands, North Island and South Island. One of the most unusual and beautiful areas of New Zealand <b>36</b> the volcanic region around Lake Taupo on North Island. There you will see boiling springs, small lakes with beds of <b>37</b> colored rocks and waterfalls. In addition, dairy farming is most important to the country’s economy, and the New Zealanders eat more meat and butter than people <b>38</b> else in the world. They also sell huge <b>39</b> of dairy products to other countries. Many of the customs in New Zealand would be familiar to travelers from England and <b>40</b> because New Zealand was settled by British settlers hundreds of years ago.</p>`,
+  G41_45: `<p>Starting from 1989, World Vision Taiwan 30-Hour Famine has been helping people victimized by man-made conflicts and disasters. Through its network in 92 countries, World Vision delivers timely emergency goods and rebuilds the communities side by side with the people.</p><p>World Vision Taiwan 30-Hour Famine is simple to join. You may choose to skip a meal or save the unnecessary spending to make a donation; to contribute your support for Online Love and Hope at island-wide 7-Eleven stores; or to invite your friends and family to do the Famine together. The 30-Hour Famine is an event of creativity and inspiration!</p><p>As an example, the aim of 2002 World Vision Taiwan was to raise NT$100 million, of which 40 million was for domestic relief projects such as Love Your Neighbor and Community-based Disaster Preparedness, and 60 million for 18 international relief projects assisting 3.6 million people in 13 countries.</p><p>The 30-Hour Famine is ongoing. Be sure that you don’t miss it this year!</p>`,
+  G46_50: `<p>Nuclear power stations are massive and complex structures. They are designed to withstand earthquakes and violent storms. They include many special safety devices and systems that help to protect the plant, the people working in it and the public, even in the event of a serious accident. However, in spite of the preventive measures, accidents have occurred, for instance, at Three Mile Island in the USA and at Chernobyl in the former USSR. These accidents have raised questions in the minds of many people about the use of nuclear energy to produce electricity.</p><p>Therefore, some years ago scientists started to consider an alternative source of electrical energy—sunlight. Using sunlight as a source of energy offers considerable advantages. Light from the sun is practically inexhaustible; in other words, sunlight cannot be used up. It is available everywhere. Besides, changing sunlight into electrical energy does not demand fuel such as coal or oil. The system of converting solar energy into electrical energy would do very little damage to the environment.</p>`,
+};

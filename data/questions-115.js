@@ -42,7 +42,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "These clothes are still , so you need to hang them in the sun to remove the water.",
+      "stem": "These clothes are still ____________, so you need to hang them in the sun to remove the water.",
       "options": {
         "A": "bare",
         "B": "dry",
@@ -57,7 +57,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "Wang Guan-hong ( 王冠閎 ) , Taiwan’s “Butterfly King,” began his swimming journey in the third grade when he the school’s swimming team.",
+      "stem": "Wang Guan-hong ( 王冠閎 ) , Taiwan’s “Butterfly King,” began his swimming journey in the third grade when he ____________ the school’s swimming team.",
       "options": {
         "A": "blocked",
         "B": "joined",
@@ -72,7 +72,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "The teacher treats all her students , giving every student the same opportunity to succeed.",
+      "stem": "The teacher treats all her students ____________, giving every student the same opportunity to succeed.",
       "options": {
         "A": "carelessly",
         "B": "equally",
@@ -87,7 +87,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "With a calm, beautiful beach just within walking distance, this hotel is a place to relax.",
+      "stem": "With a calm, beautiful beach just within walking distance, this hotel is a ____________ place to relax.",
       "options": {
         "A": "difficult",
         "B": "fearful",
@@ -102,7 +102,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "In order to more customers, the bakery café offers a 20 % discount on each cup of coffee for three days.",
+      "stem": "In order to ____________ more customers, the bakery café offers a 20 % discount on each cup of coffee for three days.",
       "options": {
         "A": "attract",
         "B": "blame",
@@ -117,7 +117,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "Weather forecasts for one or two days ahead are quite , providing correct weather information most of the time.",
+      "stem": "Weather forecasts for one or two days ahead are quite ____________, providing correct weather information most of the time.",
       "options": {
         "A": "accurate",
         "B": "doubtful",
@@ -132,7 +132,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "Amy was certain that she had a high fever after measuring her body .",
+      "stem": "Amy was certain that she had a high fever after measuring her body ____________.",
       "options": {
         "A": "existence",
         "B": "image",
@@ -147,7 +147,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "語境選字"
       ],
-      "stem": "When the award presenter Shu Qi ( 舒淇 ) as the winner of the Best Director Award at the 30th Busan International Film Festival ( 釜山影展 ) , the audience stood up and clapped their hands.",
+      "stem": "When the award presenter ____________ Shu Qi ( 舒淇 ) as the winner of the Best Director Award at the 30th Busan International Film Festival ( 釜山影展 ) , the audience stood up and clapped their hands.",
       "options": {
         "A": "announced",
         "B": "circulated",
@@ -192,7 +192,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "日常購物"
       ],
-      "stem": "Customer: Hi, do you sell phone chargers? Clerk: Yes, over there. Take a look, please. Customer: Great, I’ll take this one. How much is it? Clerk: That’ll be NT$ 350. . Customer: No, just the charger. Clerk: OK, got it.",
+      "stem": "Customer: Hi, do you sell phone chargers?\nClerk: Yes, over there. Take a look, please.\nCustomer: Great, I’ll take this one. How much is it?\nClerk: That’ll be NT$ 350. ____________\nCustomer: No, just the charger.\nClerk: OK, got it.",
       "options": {
         "A": "Is that all?",
         "B": "Anything else?",
@@ -207,7 +207,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "休閒娛樂"
       ],
-      "stem": "Jane: Did you go to the BLACKPINK concert? Tom: Nope. I was busy preparing for a singing competition. Jane: Oh! And did you go to the TWICE concert? Tom: . Jane: Lucky you! You got the tickets! I wish I were there with you.",
+      "stem": "Jane: Did you go to the BLACKPINK concert?\n Tom: Nope. I was busy preparing for a singing competition.\n Jane: Oh! And did you go to the TWICE concert?\n Tom: ____________ .\n Jane: Lucky you! You got the tickets! I wish I were there with you.",
       "options": {
         "A": "They’ll never come again.",
         "B": "I went with my classmates.",
@@ -222,7 +222,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "節慶文化"
       ],
-      "stem": "Liz: I’m going to the supermarket to pick up two boxes of mandarin oranges. My mother ordered them for Chinese New Year. Jay: . Liz: They are a symbol of good fortune. We eat them to bring good luck.",
+      "stem": "Liz: I’m going to the supermarket to pick up two boxes of mandarin oranges. My mother ordered\n them for Chinese New Year.\n Jay: ____________ .\n Liz: They are a symbol of good fortune. We eat them to bring good luck.",
       "options": {
         "A": "Since when?",
         "B": "Which supermarket?",
@@ -237,7 +237,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "終身學習"
       ],
-      "stem": "Brian: I heard you’re learning Spanish. Is it hard? Lily: Yes, it is, but I like it. Brian: You’re already 30. . Lily: No, not at all. Age is not a big deal.",
+      "stem": "Brian: I heard you’re learning Spanish. Is it hard?\nLily: Yes, it is, but I like it.\nBrian: You’re already 30. ____________\nLily: No, not at all. Age is not a big deal.",
       "options": {
         "A": "How would you deal with it anyway?",
         "B": "Isn’t Spanish your favorite language?",
@@ -252,7 +252,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "健康安全"
       ],
-      "stem": "Peter: Gosh. I left my bottled water on my bike. Rose: For the whole afternoon? Then don’t drink it. It’s hot outside. The sun may have heated it up. Peter: . Rose: Chemicals from plastics may have got into the water. It’s not good for your health. Peter: I didn’t know that!",
+      "stem": "Peter: Gosh. I left my bottled water on my bike.\n Rose: For the whole afternoon? Then don’t drink it. It’s hot outside. The sun may have heated\n it up.\n Peter: ____________ .\n Rose: Chemicals from plastics may have got into the water. It’s not good for your health.\n Peter: I didn’t know that!",
       "options": {
         "A": "What’s wrong with that?",
         "B": "Where did I leave my bike?",
@@ -267,7 +267,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "家庭協作"
       ],
-      "stem": "Mrs. Wu: I’m going shopping. Would you mind picking up Jimmy at the sports center? Mr. Wu: I’d like to, but I’ll have an online meeting soon. Mrs. Wu: We’re out of food for dinner. There’s nothing left in the fridge. Mr. Wu: . Mrs. Wu: Great! You go book the restaurant now and I’ll get Jimmy.",
+      "stem": "Mrs. Wu: I’m going shopping. Would you mind picking up Jimmy at the sports center?\n Mr. Wu: I’d like to, but I’ll have an online meeting soon.\n Mrs. Wu: We’re out of food for dinner. There’s nothing left in the fridge.\n Mr. Wu: ____________ .\n Mrs. Wu: Great! You go book the restaurant now and I’ll get Jimmy.",
       "options": {
         "A": "Are you interested in sports?",
         "B": "Can I go shopping right now?",
@@ -282,7 +282,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "技職競賽"
       ],
-      "stem": "Ming: Did you know the skills contest in Taipei last year? A-Mei: The Asian Skills Competition at Nangang Exhibition Center? Ming: Yes. I was there. It was very impressive. The Taiwan team did a good job! A-Mei: . Ming: Twenty-two in total. We won the team title; we were the best in Asia!",
+      "stem": "Ming: Did you know the skills contest in Taipei last year?\n A-Mei: The Asian Skills Competition at Nangang Exhibition Center?\n Ming: Yes. I was there. It was very impressive. The Taiwan team did a good job!\n A-Mei: ____________ .\n Ming: Twenty-two in total. We won the team title; we were the best in Asia!",
       "options": {
         "A": "Did we get any gold medals?",
         "B": "Did you go there by the Blue 22 bus?",
@@ -297,7 +297,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "求職表達"
       ],
-      "stem": "Ann: Hey, I’m writing my resume. What should I put first? Ben: You can list your education first. Ann: What’s next? . Ben: Yes. My advice is that you list your past jobs going backwards in time, from your last job to your first job.",
+      "stem": "Ann: Hey, I’m writing my resume. What should I put first?\nBen: You can list your education first.\nAnn: What’s next? ____________\nBen: Yes. My advice is that you list your past jobs going backwards in time, from your last job to your first job.",
       "options": {
         "A": "Your job plan?",
         "B": "My work experience?",
@@ -312,7 +312,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "公民生活"
       ],
-      "stem": "Dave: Grandma, you need to renew your driver’s license if you want to keep driving. Grandma: But I’m just 71. I thought only people over 75 had to do it. Dave: Not anymore. The new rules say people have to renew their licenses at 70 now. Grandma: That won’t be a problem. I’m very healthy. . Dave: I totally agree, Grandma. I believe I’ll still get rides from you.",
+      "stem": "Dave: Grandma, you need to renew your driver’s license if you want to keep driving.\nGrandma: But I’m just 71. I thought only people over 75 had to do it.\nDave: Not anymore. The new rules say people have to renew their licenses at 70 now.\nGrandma: That won’t be a problem. I’m very healthy. ____________\nDave: I totally agree, Grandma. I believe I’ll still get rides from you.",
       "options": {
         "A": "Maybe I should sell my car right now.",
         "B": "Maybe it’s time for me to stop driving.",
@@ -327,7 +327,7 @@ window.QUESTION_BANK.push({
       "tags": [
         "人物與環境"
       ],
-      "stem": "Willy: Did you hear that Dr. Jane Goodall ( 珍古德博士 ) passed away last year? Joan: It’s so sad. She spent her whole life studying chimpanzees in Africa. Willy: Yes. So now we know better how chimpanzees behave in the wild.",
+      "stem": "Willy: Did you hear that Dr. Jane Goodall (珍古德博士) passed away last year?\nJoan: It’s so sad. She spent her whole life studying chimpanzees in Africa.\nWilly: Yes. ____________ So now we know better how chimpanzees behave in the wild.",
       "options": {
         "A": "She put a lot of effort into protecting the oceans.",
         "B": "She really helped people understand these animals.",

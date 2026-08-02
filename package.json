@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "build:data": "node scripts/build-official-data.mjs",
+    "build:questions:all": "node scripts/audit-question-sources.mjs && node scripts/build-pdf-question-banks.mjs && node scripts/build-recent-question-banks.mjs && node scripts/build-questions-115.mjs && node scripts/build-question-bundle.mjs",
     "build:questions:115": "node scripts/build-questions-115.mjs",
     "test": "node --test",
     "serve": "npx serve ."

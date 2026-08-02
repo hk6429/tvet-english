@@ -4,14 +4,16 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { load } from "cheerio";
+import { CACHE_DIR, cachedQuestionDocx, cachedQuestionPdf } from "./lib/official-sources.mjs";
+import { extractPdfTextByPage } from "./lib/pdf-text.mjs";
+import { parsePdfBank } from "./lib/parse-pdf-bank.mjs";
 
 const SOURCE_DOCX = "https://web1.tcte.edu.tw/EXAM/115_4y/downloader.php?obj=MTE1LTR5LTAwLWUuZG9jeA==";
 const OUTPUT = new URL("../data/questions-115.js", import.meta.url);
 const temp = mkdtempSync(join(tmpdir(), "tvet-english-115-"));
-const docx = join(temp, "115.docx");
+const docx = await cachedQuestionDocx(115);
 const htmlFile = join(temp, "115.html");
 
-execFileSync("curl", ["-LfsS", SOURCE_DOCX, "-o", docx], { stdio: "inherit" });
 execFileSync("pandoc", [docx, "-t", "html", "-o", htmlFile], { stdio: "inherit" });
 
 const $ = load(readFileSync(htmlFile, "utf8"));
@@ -98,6 +100,9 @@ for (const row of rows) {
   if (no >= 1 && no <= 42) {
     finish(current);
     const container = $(row).find("blockquote").first().length ? $(row).find("blockquote").first() : $(row).find("th,td").first();
+    container.find("u").each((_, underline) => {
+      if (!normalize($(underline).text().replace(/[\uF000-\uF8FF]/g, ""))) $(underline).text("____________");
+    });
     const rawStem = normalize(container.text()).replace(new RegExp(`^${no}\\.\\s*`), "");
     const group = activeGroup && no >= activeGroup.start && no <= activeGroup.end ? activeGroup.id : undefined;
     current = {
@@ -129,6 +134,25 @@ if (questions.length !== 42) throw new Error(`只解析到 ${questions.length}/4
 const answers = "DBBDAADAACBBCDACABCBADACBAADACCDBBCDDCBDDC".split("");
 if (answers.length !== 42) throw new Error(`答案數量錯誤：${answers.length}`);
 questions.forEach((question, index) => { question.answer = answers[index]; });
+
+const pdfPath = await cachedQuestionPdf(115);
+const { text: pdfText } = extractPdfTextByPage(pdfPath, 115, CACHE_DIR);
+const pdfBank = parsePdfBank({ year: 115, text: pdfText, expected: 42, answers });
+for (const question of questions) {
+  const pdfQuestion = pdfBank.questions[question.no - 1];
+  const docxBlankCount = (question.stem.match(/_{3,}/g) ?? []).length;
+  const pdfBlankCount = (pdfQuestion.stem.match(/_{3,}/g) ?? []).length;
+  if (pdfBlankCount > docxBlankCount) question.stem = pdfQuestion.stem;
+}
+
+const MANUAL_STEMS = {
+  11: "Customer: Hi, do you sell phone chargers?\nClerk: Yes, over there. Take a look, please.\nCustomer: Great, I’ll take this one. How much is it?\nClerk: That’ll be NT$ 350. ____________\nCustomer: No, just the charger.\nClerk: OK, got it.",
+  14: "Brian: I heard you’re learning Spanish. Is it hard?\nLily: Yes, it is, but I like it.\nBrian: You’re already 30. ____________\nLily: No, not at all. Age is not a big deal.",
+  18: "Ann: Hey, I’m writing my resume. What should I put first?\nBen: You can list your education first.\nAnn: What’s next? ____________\nBen: Yes. My advice is that you list your past jobs going backwards in time, from your last job to your first job.",
+  19: "Dave: Grandma, you need to renew your driver’s license if you want to keep driving.\nGrandma: But I’m just 71. I thought only people over 75 had to do it.\nDave: Not anymore. The new rules say people have to renew their licenses at 70 now.\nGrandma: That won’t be a problem. I’m very healthy. ____________\nDave: I totally agree, Grandma. I believe I’ll still get rides from you.",
+  20: "Willy: Did you hear that Dr. Jane Goodall (珍古德博士) passed away last year?\nJoan: It’s so sad. She spent her whole life studying chimpanzees in Africa.\nWilly: Yes. ____________ So now we know better how chimpanzees behave in the wild.",
+};
+for (const [number, stem] of Object.entries(MANUAL_STEMS)) questions[Number(number) - 1].stem = stem;
 
 groups.G31_32.image = "img/115/g31-32.png";
 groups.G33_35.image = "img/115/g33-35.png";

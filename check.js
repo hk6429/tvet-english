@@ -24,16 +24,16 @@ function answerLabel(answer) {
   if (answer.includes("、")) return `${answer}（雙答案）`;
   return answer;
 }
-function statsChartHtml(no, answer, group = "all") {
-  const stats = OFFICIAL_OPTION_STATS_115[no];
+function statsChartHtml(year, no, answer, group = "all") {
+  const stats = year === 115 ? OFFICIAL_OPTION_STATS_115[no] : null;
   if (!stats) return "";
   const accepted = acceptedAnswers(answer);
   return `<div class="option-stat-rows">${["A", "B", "C", "D"].map((choice) => `<div class="option-stat-row"><span>(${choice})${accepted.includes(choice) ? " ✓正解" : ""}</span><div><i style="width:${stats[group][choice]}%" class="${accepted.includes(choice) ? "correct" : ""}"></i></div><b>${stats[group][choice].toFixed(1)}%</b></div>`).join("")}</div>`;
 }
-function officialStatsHtml(no, answer) {
-  const stats = OFFICIAL_OPTION_STATS_115[no];
+function officialStatsHtml(year, no, answer) {
+  const stats = year === 115 ? OFFICIAL_OPTION_STATS_115[no] : null;
   if (!stats) return `<p class="stats-unavailable">本題官方未公開選項百分比分布；本站不自行推算。</p>`;
-  return `<div class="official-stats" data-check-stats="${no}"><div class="official-source-label">官方公布資料</div><div class="stats-head"><b class="stats-title">全體考生作答分布（統測中心試題研討會）</b><span><button type="button" data-check-group="all" class="active" aria-pressed="true">全體</button><button type="button" data-check-group="low" aria-pressed="false">待加強組</button></span></div><div class="stats-chart">${statsChartHtml(no, answer)}</div></div>`;
+  return `<div class="official-stats" data-check-stats="${no}"><div class="official-source-label">官方公布資料</div><div class="stats-head"><b class="stats-title">全體考生作答分布（統測中心試題研討會）</b><span><button type="button" data-check-group="all" class="active" aria-pressed="true">全體</button><button type="button" data-check-group="low" aria-pressed="false">待加強組</button></span></div><div class="stats-chart">${statsChartHtml(year, no, answer)}</div></div>`;
 }
 function updateLinks() {
   const exam = selectedExam();
@@ -68,7 +68,9 @@ function showAnswer() {
       const groupMaterial = group?.passage || group?.image
         ? `<details class="source-passage" open><summary>${escapeHtml(group.title)}</summary>${group.passage ?? ""}${group.image ? `<img class="source-figure" src="${escapeHtml(group.image)}" alt="第 ${question.group.slice(1).replace("_", "–")} 題官方圖表">` : ""}</details>`
         : "";
-      result.innerHTML = `<article class="question-card check-question"><div class="question-meta"><span>統測 ${exam.year} 年第 ${no} 題</span><span class="question-tag cat-${question.cat}">${escapeHtml(categories[question.cat] ?? question.cat)}</span>${(question.tags ?? []).map((tag) => `<span class="question-tag">${escapeHtml(tag)}</span>`).join("")}${readProcess[question.cat] ? `<span class="question-tag process-tag">${readProcess[question.cat]}</span>` : ""}</div>${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}<fieldset><legend><span>${no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${["A", "B", "C", "D"].map((choice) => `<div class="question-option ${accepted.includes(choice) ? "is-correct" : ""}"><span class="option-letter">${choice}</span><span>${escapeHtml(question.options[choice])}</span></div>`).join("")}</div></fieldset><div class="question-feedback"><p class="feedback-status is-correct">✓ 官方答案：${escapeHtml(answerLabel(question.answer))}</p><div class="explanation"><span class="explain-label">本站自編解析（非官方）</span><b>解題關鍵</b><p>${QUESTION_INSIGHTS_115[no]?.explain ?? "請參照官方答案。"}</p></div>${metric ? `<p class="metric-badges"><span>難度：${metric.difficulty}</span><span>鑑別度：${metric.discrimination}</span></p>` : ""}${officialStatsHtml(no, question.answer)}</div></article>`;
+      const sourcePageMaterial = question.sourcePageImage ? `<details class="source-passage source-page" open><summary>本題官方原卷圖</summary><img class="source-figure" src="${escapeHtml(question.sourcePageImage)}" alt="${exam.year} 年第 ${no} 題官方原卷頁面"></details>` : "";
+      const explanation = question.explain ?? (exam.year === 115 ? QUESTION_INSIGHTS_115[no]?.explain : null) ?? "請參照官方答案。";
+      result.innerHTML = `<article class="question-card check-question"><div class="question-meta"><span>統測 ${exam.year} 年第 ${no} 題</span><span class="question-tag cat-${question.cat}">${escapeHtml(categories[question.cat] ?? question.cat)}</span>${(question.tags ?? []).map((tag) => `<span class="question-tag">${escapeHtml(tag)}</span>`).join("")}${readProcess[question.cat] ? `<span class="question-tag process-tag">${readProcess[question.cat]}</span>` : ""}</div>${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}${sourcePageMaterial}<fieldset><legend><span>${no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${["A", "B", "C", "D"].map((choice) => `<div class="question-option ${accepted.includes(choice) ? "is-correct" : ""}"><span class="option-letter">${choice}</span><span>${escapeHtml(question.options[choice])}</span></div>`).join("")}</div></fieldset><div class="question-feedback"><p class="feedback-status is-correct">✓ 官方答案：${escapeHtml(answerLabel(question.answer))}</p><div class="explanation"><span class="explain-label">本站自編解析（非官方）</span><b>解題關鍵</b><p>${escapeHtml(explanation)}</p></div>${metric ? `<p class="metric-badges"><span>難度：${metric.difficulty}</span><span>鑑別度：${metric.discrimination}</span></p>` : ""}${officialStatsHtml(exam.year, no, question.answer)}</div></article>`;
     }
   }
   result.hidden = false;
@@ -88,7 +90,7 @@ result.addEventListener("click", (event) => {
     candidate.classList.toggle("active", active);
     candidate.setAttribute("aria-pressed", String(active));
   });
-  result.querySelector(".stats-chart").innerHTML = statsChartHtml(no, question.answer, button.dataset.checkGroup);
+  result.querySelector(".stats-chart").innerHTML = statsChartHtml(Number(yearSelect.value), no, question.answer, button.dataset.checkGroup);
   result.querySelector(".stats-title").textContent = `${button.dataset.checkGroup === "low" ? "待加強組" : "全體考生"}作答分布（統測中心試題研討會）`;
 });
 
