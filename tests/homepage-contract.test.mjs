@@ -4,6 +4,12 @@ import test from "node:test";
 
 const html = readFileSync(new URL("../index.html", import.meta.url), "utf8");
 const app = readFileSync(new URL("../app.js", import.meta.url), "utf8");
+const vercelConfig = JSON.parse(readFileSync(new URL("../vercel.json", import.meta.url), "utf8"));
+
+test("Vercel 會提供與其他平台一致的無副檔名查題網址", () => {
+  assert.equal(vercelConfig.cleanUrls, true);
+  assert.match(html, /href="check"/);
+});
 
 test("附圖首頁主要操作均有穩定控制 ID", () => {
   for (const id of ["quickStartButton", "yearPicker", "yearOptions", "selectAllYears", "clearAllYears", "categoryFilter", "questionCount", "randomToggle", "timedToggle", "difficultySelect", "discriminationSelect", "wrongBookButton", "historyButton", "mockButton", "teacherButton", "rankButton", "paperSize", "printButton", "wordButton", "selectAllTeacher", "selectNoneTeacher"]) {
