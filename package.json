@@ -1,0 +1,15 @@
+{
+  "name": "tvet-english",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build:data": "node scripts/build-official-data.mjs",
+    "build:questions:115": "node scripts/build-questions-115.mjs",
+    "test": "node --test",
+    "serve": "npx serve ."
+  },
+  "devDependencies": {
+    "cheerio": "^1.1.2"
+  }
+}

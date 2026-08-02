@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="90–115 學年度四技二專統測英文官方歷屆試題、線上答案卡與自動計分。">
+  <meta name="theme-color" content="#143d73">
+  <link rel="canonical" href="https://tvet-english.vercel.app/">
+  <meta property="og:title" content="統測英文歷屆試題庫">
+  <meta property="og:description" content="90–115 學年度官方題本、答案卡與 115 年逐題練習。">
+  <meta property="og:url" content="https://tvet-english.vercel.app/">
+  <title>統測英文歷屆試題庫｜90–115 官方考古題</title>
+  <link rel="icon" href="favicon.svg?v=20260802-v1" type="image/svg+xml">
+  <link rel="stylesheet" href="styles.css?v=20260802-v1">
+  <script defer src="data/exams.js?v=20260802-v1"></script>
+  <script defer src="data/questions-115.js?v=20260802-v1"></script>
+  <script type="module" src="app.js?v=20260802-v1"></script>
+  <style id="paperPageStyle"></style>
+</head>
+<body>
+  <a class="skip-link" href="#mainContent">跳到主要內容</a>
+  <header class="hero">
+    <nav aria-label="主要導覽">
+      <a class="brand" href="./">統測英文題庫</a>
+      <a href="check">查題校對</a>
+      <a href="#about">資料說明</a>
+    </nav>
+    <div class="hero-copy">
+      <p class="eyebrow">四技二專統一入學測驗・共同科目</p>
+      <h1>把二十六年的英文考古題，變成真正能作答的練習卷。</h1>
+      <p>90–115 學年度，共 1,196 題選擇題。題本與答案均連回技專校院入學測驗中心官方資料。</p>
+    </div>
+  </header>
+
+  <main id="mainContent">
+    <section class="stats" aria-label="收錄統計">
+      <div><strong>26</strong><span>個年度可選</span></div>
+      <div><strong>1,196</strong><span>題官方答案</span></div>
+      <div><strong>42</strong><span>題難度分組</span></div>
+      <div><strong>9</strong><span>題選項分布</span></div>
+    </section>
+
+    <section class="introbox" aria-label="使用說明">
+      <strong>這是什麼？</strong>從 90–115 學年度統測英文考古題中，挑選分類、年份與題數，讓學生直接作答，選完立刻看到對錯與解析。
+      <span>以訪客身分練習，不會上傳個人資料；錯題本與學習歷程只保存在這台裝置的瀏覽器。</span>
+    </section>
+
+    <section class="quickstart-card" aria-label="快速開始">
+      <button id="quickStartButton" class="quickstart-button" type="button">立即開始・隨機 10 題</button>
+      <p>依目前勾選的年度隨機抽題，按下後直接在下方作答。想指定分類、整回模考或老師出題，再往下設定條件。</p>
+    </section>
+
+    <section class="panel practice-builder" aria-labelledby="practice-title">
+      <div class="builder-head">
+        <div>
+        <p class="section-label">歷屆實戰</p>
+          <h2 id="practice-title">選擇範圍</h2>
+        </div>
+        <button id="advancedToggle" class="text-button" type="button" aria-expanded="true" aria-controls="builderBody">收合大標／小標⌃</button>
+      </div>
+      <div class="filter-grid basic-filters" aria-label="基本練習設定">
+        <div class="year-control"><span class="filter-label">學年度（可複選）</span>
+          <details id="yearPicker" class="year-picker">
+            <summary id="yearSummary" aria-describedby="yearMeta">115 學年度</summary>
+            <div class="year-picker-panel">
+              <div class="year-picker-actions"><button id="selectAllYears" class="text-button" type="button">全選</button><button id="clearAllYears" class="text-button" type="button">清除</button></div>
+              <div id="yearOptions" class="year-options" aria-label="學年度複選"></div>
+            </div>
+          </details>
+        </div>
+        <label>題數
+          <input id="questionCount" type="number" min="1" value="10" inputmode="numeric">
+        </label>
+        <label class="check-control"><input id="randomToggle" type="checkbox" checked> 隨機抽題號</label>
+      </div>
+      <p id="filterSummary" class="filter-summary" hidden></p>
+      <div id="builderBody">
+        <div class="filter-grid secondary-filters">
+          <label class="check-control"><input id="timedToggle" type="checkbox"> 計時模式（每題 100 秒）</label>
+          <label>難度
+            <select id="difficultySelect"><option value="全部">全部</option><option>困難</option><option>中等</option><option>容易</option></select>
+          </label>
+          <label>鑑別度
+            <select id="discriminationSelect"><option value="全部">全部</option><option>不佳</option><option>可</option><option>佳</option><option>優</option></select>
+          </label>
+          <label class="check-control"><input id="easyFirstToggle" type="checkbox"> 由易到難排序</label>
+        </div>
+
+        <fieldset id="categoryFilter" class="category-filter">
+          <legend>依技術型高中英語文課綱分類</legend>
+          <p class="taxonomy-source">以英語文課綱與統測中心「語言知識、溝通功能、思考能力」評量架構為母架構，再依 115 年真題考點細分。<a href="https://stv.naer.edu.tw/data/course_outline/pta_18519_8013652_59836.pdf" target="_blank" rel="noopener">查看國家教育研究院正式課綱</a></p>
+          <div id="categoryOptions"></div>
+        </fieldset>
+        <p id="categoryUnavailable" class="unavailable-note" hidden>這個年度尚未完成逐題分類，因此只提供年度、題數與官方統計篩選。</p>
+        <p class="annotation-note">115 年已完成大標／小標；舊年度尚未逐題結構化，因此不套用分類篩選。</p>
+      </div>
+      <p id="yearMeta" class="match-count"></p>
+      <a id="metricSourceLink" class="metric-source" target="_blank" rel="noopener" hidden>查看本年度官方試題研討會資料</a>
+      <div class="action-row">
+        <button id="startButton" class="secondary" type="button">依條件開始練習</button>
+        <button id="moreToggle" class="text-button" type="button" aria-expanded="false" aria-controls="moreActions">更多功能⌄</button>
+      </div>
+      <div id="moreActions" class="more-actions" hidden>
+        <div class="more-group"><b>學生練習</b><div><button id="wrongBookButton" class="quiet" type="button">錯題本（<span id="wrongCount">0</span>）</button><button id="historyButton" class="quiet" type="button">學習歷程</button></div></div>
+        <div class="more-group"><b>模考與教師工具</b><div><button id="mockButton" class="quiet" type="button">整回模考</button><button id="teacherButton" class="quiet" type="button">出卷模式</button><button id="rankButton" class="quiet" type="button">難度分組</button></div></div>
+        <div class="more-group"><b>資料管理</b><div><button id="exportButton" class="quiet" type="button">匯出學習紀錄</button><label class="button-file quiet">匯入學習紀錄<input id="importInput" type="file" accept="application/json"></label></div></div>
+      </div>
+    </section>
+
+    <section id="rankPanel" class="panel history-panel" hidden>
+      <div class="panel-head"><div><p class="section-label">官方統計</p><h2>難度與鑑別度分組</h2></div><button id="closeRank" class="quiet" type="button">關閉</button></div>
+      <p class="muted">115 年依官方試題研討會交叉表呈現；同一級別內沒有官方精確數值時，不自行排序。</p>
+      <div id="rankContent"></div>
+    </section>
+
+    <section id="historyPanel" class="panel history-panel" hidden aria-live="polite">
+      <div class="panel-head"><div><p class="section-label">學習歷程</p><h2>最近練習</h2></div><button id="closeHistory" class="quiet" type="button">關閉</button></div>
+      <div id="historyContent"></div>
+    </section>
+
+    <section id="teacherPanel" class="panel teacher-panel" hidden>
+      <div class="panel-head"><div><p class="section-label">出卷模式（老師）</p><h2 id="teacherTitle" tabindex="-1">勾選題目，建立線上測驗或可編輯考卷</h2></div><button id="closeTeacher" class="quiet" type="button">關閉</button></div>
+      <p class="muted">依上方篩選條件列出題目；115 年可列印題文、教師答案與解析，舊年度仍提供官方原卷答案卡。</p>
+      <div class="control-row">
+        <label>紙張<select id="paperSize"><option value="A4">A4</option><option value="B4">B4（雙欄推薦）</option></select></label>
+        <button id="applyTeacherButton" class="quiet" type="button">套用目前條件</button>
+        <button id="selectAllTeacher" class="quiet" type="button">全選</button>
+        <button id="selectNoneTeacher" class="quiet" type="button">全不選</button>
+        <button id="shareButton" class="primary" type="button">產生測驗連結</button>
+        <button id="printButton" class="primary" type="button">列印考卷</button>
+        <button id="wordButton" class="quiet" type="button">下載可編輯檔（.doc）</button>
+        <strong id="selectedTeacherCount">已選 0 題</strong>
+      </div>
+      <div id="teacherPreview" class="teacher-preview"></div>
+    </section>
+
+    <section id="teacherPrint" class="teacher-print" hidden></section>
+
+    <section id="workspace" class="workspace" hidden>
+      <div class="paper-panel panel" tabindex="-1">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">官方原卷</p>
+            <h2 id="paperTitle" tabindex="-1"></h2>
+          </div>
+          <div class="paper-actions">
+            <span id="timer" class="timer" aria-label="剩餘時間">不計時</span>
+            <a id="questionLink" class="button-link" target="_blank" rel="noopener">開啟官方題本</a>
+          </div>
+        </div>
+        <p id="formatNotice" class="notice"></p>
+        <div class="source-card">
+          <span aria-hidden="true">EN</span>
+          <div><strong>115 年 42 題已結構化</strong><p>兩張必要圖表已取自官方 PDF；舊年度仍請開啟官方題本核對題文。</p></div>
+        </div>
+        <div id="sourceLinks" class="source-links"></div>
+      </div>
+
+      <div class="answer-panel panel">
+        <div class="panel-head">
+          <div>
+            <p class="section-label">逐題練習</p>
+            <h2>目前完成 <span id="answeredCount">0</span> 題</h2>
+          </div>
+          <button id="clearButton" class="quiet" type="button">清除本卷</button>
+        </div>
+        <div class="session-progress" aria-label="作答進度"><span id="progressText">已完成 0／0 題</span><progress id="answerProgress" value="0" max="1">0%</progress></div>
+        <p class="answer-mode-notice">選定選項後，立即顯示正誤、正解、解析與已公開的官方統計；全部完成後再查看本卷總成績。</p>
+        <form id="answerForm">
+          <div id="answerGrid" class="answer-grid"></div>
+          <button class="primary submit" type="submit">查看本卷總成績</button>
+        </form>
+        <div id="result" class="result" hidden aria-live="polite"></div>
+      </div>
+    </section>
+
+    <p id="storageWarning" class="storage-warning" role="status" hidden>瀏覽器目前無法保存學習紀錄；本次仍可作答，但重新整理後紀錄可能消失。</p>
+    <p id="sessionAnnouncement" class="sr-only" aria-live="polite"></p>
+
+    <section class="panel archive" aria-labelledby="archive-title">
+      <p class="section-label">完整典藏</p>
+      <h2 id="archive-title">90–115 學年度官方來源</h2>
+      <div id="archiveGrid" class="archive-grid"></div>
+    </section>
+
+    <section id="about" class="panel prose">
+      <p class="section-label">資料說明</p>
+      <h2>我們寧可誠實留白，也不替官方答案腦補。</h2>
+      <p>本版已完成 90–115 年官方原卷、線上答案卡與自動計分；115 年另完成 42 題題文、選項、6 大標／32 個真題小標與逐題解析，並收錄完整難度、鑑別度分組。</p>
+      <p>115 年另有填充、句子重組與中譯英共 3 題非選擇題；目前保留在官方原卷，未硬塞進單選題自動計分。試題著作權與使用規範依技專校院入學測驗中心公告。</p>
+      <p class="muted">90–114 年尚未完成逐題題文與分類，僅提供官方原卷、官方答案卡及題號練習；查不到的精確統計不以比例或答案反推。</p>
+    </section>
+  </main>
+
+  <footer>大乃老師的教學實驗室・資料以官方公告為準</footer>
+</body>
+</html>
