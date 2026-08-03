@@ -42,6 +42,12 @@ npm run build:questions:all
 
 系統需有 `pdftotext`、`pdftoppm`、`tesseract`（`eng+chi_tra`）與 `pandoc`。產生器會逐年檢查題號、題數與官方答案；測試另驗證題組範圍、A–D 選項、分類、解析及圖片路徑，缺漏時直接失敗。
 
+## 問題回報
+
+- 練習頁與查題頁可直接回報單題問題，系統會自動附上題幹、選項、答案、解析與官方來源。
+- Vercel API 需要設定 `TELEGRAM_BOT_TOKEN` 與 `TELEGRAM_REPORT_CHAT_ID`；機密資料不得寫入版控。
+- Cloudflare Pages 與 Netlify 的表單會跨站送往 Vercel API。
+
 ## 目前完成度
 
 - [x] 90–115 官方來源與公告答案

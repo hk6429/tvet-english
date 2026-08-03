@@ -19,6 +19,32 @@ if (Number.isInteger(requestedNo) && requestedNo > 0) numberInput.value = String
 function selectedExam() { return exams.find((exam) => exam.year === Number(yearSelect.value)); }
 function escapeHtml(value = "") { return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]); }
 function selectedQuestion(year, no) { return questionBanks.find((bank) => bank.year === year)?.questions.find((question) => question.no === no); }
+function plainText(value = "") {
+  const node = document.createElement("div");
+  node.innerHTML = String(value);
+  return node.textContent.replace(/\s+/g, " ").trim();
+}
+function questionReportContext(exam, no, question) {
+  const bank = questionBanks.find((item) => item.year === exam.year);
+  const group = question?.group ? bank?.groups[question.group] : null;
+  const material = [group?.passage, question?.passage].map(plainText).filter(Boolean).join("\n");
+  const stem = question?.stem || `本站目前只顯示官方答案卡，請搭配官方題本核對第 ${no} 題。`;
+  return {
+    id: `${exam.year}-${no}`,
+    year: exam.year,
+    no,
+    subject: "統測英文",
+    kind: question ? "選擇題" : "答案卡",
+    category: question ? (categories[question.cat] ?? question.cat) : "尚未結構化",
+    tags: question?.tags ?? [],
+    prompt: material ? `${material}\n\n${stem}` : stem,
+    options: question?.options ?? {},
+    answer: question?.answer ?? exam.answers[no - 1],
+    explanation: question?.explain ?? (exam.year === 115 ? QUESTION_INSIGHTS_115[no]?.explain : null) ?? "本站尚未完成本題逐題解析。",
+    source: exam.questionUrl,
+    image: question?.sourcePageImage ?? group?.image ?? "",
+  };
+}
 function answerLabel(answer) {
   if (answer === "送分") return "送分題（A–D 皆計分）";
   if (answer.includes("、")) return `${answer}（雙答案）`;
@@ -59,7 +85,7 @@ function showAnswer() {
     numberInput.removeAttribute("aria-invalid");
     const question = selectedQuestion(exam.year, no);
     if (!question) {
-      result.innerHTML = `<strong>${exam.year} 學年度第 ${no} 題：${answerLabel(exam.answers[no - 1])}</strong><p>答案取自技專校院入學測驗中心官方公告；請搭配官方原卷核對題文。</p>`;
+      result.innerHTML = `<strong>${exam.year} 學年度第 ${no} 題：${answerLabel(exam.answers[no - 1])}</strong><p>答案取自技專校院入學測驗中心官方公告；請搭配官方原卷核對題文。</p><button class="report-question-btn" data-check-report type="button">回報本題問題</button>`;
     } else {
       const bank = questionBanks.find((item) => item.year === exam.year);
       const group = question.group ? bank?.groups[question.group] : null;
@@ -70,7 +96,7 @@ function showAnswer() {
         : "";
       const sourcePageMaterial = question.sourcePageImage ? `<details class="source-passage source-page" open><summary>本題官方原卷圖</summary><img class="source-figure" src="${escapeHtml(question.sourcePageImage)}" alt="${exam.year} 年第 ${no} 題官方原卷頁面"></details>` : "";
       const explanation = question.explain ?? (exam.year === 115 ? QUESTION_INSIGHTS_115[no]?.explain : null) ?? "請參照官方答案。";
-      result.innerHTML = `<article class="question-card check-question"><div class="question-meta"><span>統測 ${exam.year} 年第 ${no} 題</span><span class="question-tag cat-${question.cat}">${escapeHtml(categories[question.cat] ?? question.cat)}</span>${(question.tags ?? []).map((tag) => `<span class="question-tag">${escapeHtml(tag)}</span>`).join("")}${readProcess[question.cat] ? `<span class="question-tag process-tag">${readProcess[question.cat]}</span>` : ""}</div>${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}${sourcePageMaterial}<fieldset><legend><span>${no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${["A", "B", "C", "D"].map((choice) => `<div class="question-option ${accepted.includes(choice) ? "is-correct" : ""}"><span class="option-letter">${choice}</span><span>${escapeHtml(question.options[choice])}</span></div>`).join("")}</div></fieldset><div class="question-feedback"><p class="feedback-status is-correct">✓ 官方答案：${escapeHtml(answerLabel(question.answer))}</p><div class="explanation"><span class="explain-label">本站自編解析（非官方）</span><b>解題關鍵</b><p>${escapeHtml(explanation)}</p></div>${metric ? `<p class="metric-badges"><span>難度：${metric.difficulty}</span><span>鑑別度：${metric.discrimination}</span></p>` : ""}${officialStatsHtml(exam.year, no, question.answer)}</div></article>`;
+      result.innerHTML = `<article class="question-card check-question"><div class="question-meta"><span>統測 ${exam.year} 年第 ${no} 題</span><span class="question-tag cat-${question.cat}">${escapeHtml(categories[question.cat] ?? question.cat)}</span>${(question.tags ?? []).map((tag) => `<span class="question-tag">${escapeHtml(tag)}</span>`).join("")}${readProcess[question.cat] ? `<span class="question-tag process-tag">${readProcess[question.cat]}</span>` : ""}</div>${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}${sourcePageMaterial}<fieldset><legend><span>${no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${["A", "B", "C", "D"].map((choice) => `<div class="question-option ${accepted.includes(choice) ? "is-correct" : ""}"><span class="option-letter">${choice}</span><span>${escapeHtml(question.options[choice])}</span></div>`).join("")}</div></fieldset><div class="question-feedback"><p class="feedback-status is-correct">✓ 官方答案：${escapeHtml(answerLabel(question.answer))}</p><div class="explanation"><span class="explain-label">本站自編解析（非官方）</span><b>解題關鍵</b><p>${escapeHtml(explanation)}</p></div>${metric ? `<p class="metric-badges"><span>難度：${metric.difficulty}</span><span>鑑別度：${metric.discrimination}</span></p>` : ""}${officialStatsHtml(exam.year, no, question.answer)}</div><button class="report-question-btn" data-check-report type="button">回報本題問題</button></article>`;
     }
   }
   result.hidden = false;
@@ -81,6 +107,13 @@ function showAnswer() {
 
 document.getElementById("checkForm").addEventListener("submit", (event) => { event.preventDefault(); showAnswer(); });
 result.addEventListener("click", (event) => {
+  const reportButton = event.target.closest("[data-check-report]");
+  if (reportButton) {
+    const exam = selectedExam();
+    const no = Number(numberInput.value);
+    window.TvetReport.openQuestion(questionReportContext(exam, no, selectedQuestion(exam.year, no)));
+    return;
+  }
   const button = event.target.closest("[data-check-group]");
   if (!button) return;
   const no = Number(result.querySelector("[data-check-stats]")?.dataset.checkStats);

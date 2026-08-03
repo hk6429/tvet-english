@@ -57,6 +57,34 @@ function itemKey(item) { return `${item.year}-${item.no}`; }
 function findExam(year) { return exams.find((exam) => exam.year === Number(year)); }
 function findQuestionBank(year) { return questionBanks.find((bank) => bank.year === Number(year)); }
 function findQuestion(year, no) { return findQuestionBank(year)?.questions.find((question) => question.no === Number(no)); }
+function plainText(value = "") {
+  const node = document.createElement("div");
+  node.innerHTML = String(value);
+  return node.textContent.replace(/\s+/g, " ").trim();
+}
+function questionReportContext(item) {
+  const question = item.question;
+  const bank = findQuestionBank(item.year);
+  const group = question?.group ? bank?.groups[question.group] : null;
+  const material = [group?.passage, question?.passage].map(plainText).filter(Boolean).join("\n");
+  const stem = question?.stem || `本站目前只顯示官方答案卡，請搭配官方題本核對第 ${item.no} 題。`;
+  return {
+    id: `${item.year}-${item.no}`,
+    year: item.year,
+    no: item.no,
+    subject: "統測英文",
+    kind: question ? "選擇題" : "答案卡",
+    category: question ? (CATEGORIES[question.cat] ?? question.cat) : "尚未結構化",
+    tags: question?.tags ?? [],
+    prompt: material ? `${material}\n\n${stem}` : stem,
+    options: question?.options ?? {},
+    answer: item.answer,
+    selected: savedAnswer(item),
+    explanation: question?.explain ?? (item.year === 115 ? QUESTION_INSIGHTS_115[item.no]?.explain : null) ?? "本站尚未完成本題逐題解析。",
+    source: findExam(item.year)?.questionUrl ?? "",
+    image: question?.sourcePageImage ?? group?.image ?? "",
+  };
+}
 function escapeHtml(value = "") { return String(value).replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]); }
 function announce(message) { $("sessionAnnouncement").textContent = message; }
 function focusPanel(element) { element.setAttribute("tabindex", "-1"); element.focus({ preventScroll: true }); }
@@ -232,7 +260,7 @@ function renderAnswerGrid() {
     ` : `
       <label class="choice"><input type="radio" name="item-${key}" data-key="${key}" value="${choice}" ${saved === choice ? "checked" : ""}><span>${choice}</span></label>
     `).join("");
-    if (!question) return `<fieldset class="answer-row"><legend>${multipleYears ? key : item.no}</legend>${choices}</fieldset>`;
+    if (!question) return `<fieldset class="answer-row"><legend>${multipleYears ? key : item.no}</legend>${choices}<button class="report-question-btn" data-report-key="${key}" type="button">回報本題問題</button></fieldset>`;
     const bank = findQuestionBank(item.year);
     const group = question.group ? bank?.groups[question.group] : null;
     let groupMaterial = "";
@@ -245,7 +273,7 @@ function renderAnswerGrid() {
     }
     const sourceMaterial = `${groupMaterial}${question.passage ? `<details class="source-passage" open><summary>本題附加材料</summary>${question.passage}</details>` : ""}${question.sourcePageImage ? `<details class="source-passage source-page" open><summary>本題官方原卷圖</summary><img class="source-figure" src="${escapeHtml(question.sourcePageImage)}" alt="${item.year} 年第 ${item.no} 題官方原卷頁面"></details>` : ""}`;
     const meta = `<div class="question-meta"><span>統測 ${item.year} 年第 ${item.no} 題</span><span class="question-tag cat-${question.cat}">${CATEGORIES[question.cat] ?? question.cat}</span>${(question.tags ?? []).map((tag) => `<span class="question-tag">${escapeHtml(tag)}</span>`).join("")}${READ_PROCESS[question.cat] ? `<span class="question-tag process-tag">${READ_PROCESS[question.cat]}</span>` : ""}<span class="question-state" id="state-${key}">尚未作答</span></div>`;
-    return `<article class="question-card" data-key="${key}">${meta}${sourceMaterial}<fieldset><legend><span>${item.no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${choices}</div></fieldset><div class="question-feedback" id="feedback-${key}" hidden aria-live="polite"></div></article>`;
+    return `<article class="question-card" data-key="${key}">${meta}${sourceMaterial}<fieldset><legend><span>${item.no}.</span> ${escapeHtml(question.stem)}</legend><div class="question-options">${choices}</div></fieldset><div class="question-feedback" id="feedback-${key}" hidden aria-live="polite"></div><button class="report-question-btn" data-report-key="${key}" type="button">回報本題問題</button></article>`;
   }).join("");
   updateAnsweredCount();
   const saved = collectAnswers();
@@ -761,6 +789,12 @@ $("wordButton").addEventListener("click", downloadTeacherWord);
 window.addEventListener("afterprint", () => { $("teacherPrint").hidden = true; });
 $("answerForm").addEventListener("change", handleAnswerChange);
 $("answerGrid").addEventListener("click", (event) => {
+  const reportButton = event.target.closest("[data-report-key]");
+  if (reportButton) {
+    const item = sessionItems.find((candidate) => itemKey(candidate) === reportButton.dataset.reportKey);
+    if (item) window.TvetReport.openQuestion(questionReportContext(item));
+    return;
+  }
   const reasonButton = event.target.closest("[data-reason]");
   if (reasonButton) {
     const card = reasonButton.closest(".question-card");
