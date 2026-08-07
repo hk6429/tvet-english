@@ -1,6 +1,6 @@
-const API_URL = ["tvet-english.pages.dev", "tvet-english.netlify.app"].includes(location.hostname)
-  ? "https://tvet-english.vercel.app/api/report"
-  : "/api/report";
+const API_URL = ["tvet-english.pages.dev", "localhost", "127.0.0.1"].includes(location.hostname)
+  ? "/api/report"
+  : "https://tvet-english.pages.dev/api/report";
 const QUESTION_REASONS = ["題目或選項有誤", "答案有誤", "解析不清", "圖片顯示異常", "其他"];
 const GENERAL_REASONS = ["操作異常", "顯示問題", "功能建議", "其他"];
 

@@ -14,8 +14,8 @@ test("練習頁與查題頁都有可存下完整題目上下文的回報入口",
     read("styles.css"),
   ]);
 
-  assert.match(index, /report-client\.js\?v=20260803-report/);
-  assert.match(check, /report-client\.js\?v=20260803-report/);
+  assert.match(index, /report-client\.js\?v=20260807-report/);
+  assert.match(check, /report-client\.js\?v=20260807-report/);
   assert.match(app, /report-question-btn/);
   assert.match(app, /TvetReport\.openQuestion/);
   assert.match(checker, /report-question-btn/);
@@ -25,7 +25,7 @@ test("練習頁與查題頁都有可存下完整題目上下文的回報入口",
   }
   assert.match(client, /setAttribute\("aria-labelledby", "reportTitle"\)/);
   assert.match(client, /回報網站問題/);
-  assert.match(client, /https:\/\/tvet-english\.vercel\.app\/api\/report/);
+  assert.match(client, /https:\/\/tvet-english\.pages\.dev\/api\/report/);
   assert.match(styles, /\.report-dialog/);
   assert.match(styles, /\.report-question-btn/);
 });

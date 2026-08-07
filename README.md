@@ -45,8 +45,8 @@ npm run build:questions:all
 ## 問題回報
 
 - 練習頁與查題頁可直接回報單題問題，系統會自動附上題幹、選項、答案、解析與官方來源。
-- Vercel API 需要設定 `TELEGRAM_BOT_TOKEN` 與 `TELEGRAM_REPORT_CHAT_ID`；機密資料不得寫入版控。
-- Cloudflare Pages 與 Netlify 的表單會跨站送往 Vercel API。
+- Cloudflare Pages Function 需要設定 `TELEGRAM_BOT_TOKEN` 與 `TELEGRAM_CHAT_ID`；機密資料不得寫入版控。
+- Cloudflare Pages 使用同網域 `/api/report`；Vercel 與 Netlify 表單會跨站送往 Cloudflare Pages API。
 
 ## 目前完成度
 

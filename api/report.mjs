@@ -106,7 +106,7 @@ function recentReports(request, now = Date.now()) {
   return { ip, recent };
 }
 
-async function handle(request) {
+async function handle(request, environment = globalThis.process?.env || {}) {
   const origin = request.headers.get("origin");
   if (origin && !ALLOWED_ORIGINS.has(origin)) return json(request, { ok: false, error: "不允許的來源。" }, 403);
   if (request.method === "OPTIONS") return new Response(null, { status: 204, headers: corsHeaders(request) });
@@ -130,8 +130,8 @@ async function handle(request) {
   const rate = recentReports(request);
   if (rate.recent.length >= RATE_LIMIT) return json(request, { ok: false, error: "回報次數過多，請稍後再試。" }, 429);
 
-  const token = process.env.TELEGRAM_BOT_TOKEN;
-  const chatId = process.env.TELEGRAM_REPORT_CHAT_ID;
+  const token = environment.TELEGRAM_BOT_TOKEN;
+  const chatId = environment.TELEGRAM_CHAT_ID || environment.TELEGRAM_REPORT_CHAT_ID;
   if (!token || !chatId) return json(request, { ok: false, error: "回報服務尚未完成設定。" }, 503);
 
   let telegramResponse;
